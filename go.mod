@@ -1,4 +1,4 @@
-module github.com/asticode/go-astilectron
+module github.com/welldonexing/go-astilectron
 
 go 1.13
 
