@@ -76,16 +76,20 @@ func (p *defaultProvisioner) Provision(ctx context.Context, appName, os, arch, v
 		return
 	}
 	s.Astilectron = &ProvisionStatusPackage{Version: versionAstilectron}
-
+	if (!FileExist(paths.appExecutable)){//不再释放electron
 	// Provision electron
 	if err = p.provisionElectron(ctx, paths, s, appName, os, arch, versionElectron); err != nil {
 		err = fmt.Errorf("provisioning electron failed: %w", err)
 		return
 	}
+	}
 	s.Electron[provisionStatusElectronKey(os, arch)] = &ProvisionStatusPackage{Version: versionElectron}
 	return
 }
-
+func FileExist(path string) bool {
+	_, err := os.Lstat(path)
+	return !os.IsNotExist(err)
+}
 // ProvisionStatus represents the provision status
 type ProvisionStatus struct {
 	Astilectron *ProvisionStatusPackage            `json:"astilectron,omitempty"`
